@@ -1,0 +1,25 @@
+name: Daily Standup Reminder
+on:
+workflow_dispatch: # Manual trigger, can be triggered by external scheduler
+jobs:
+send-reminder:
+runs-on: ubuntu-latest
+steps:
+- name: Checkout code
+uses: actions/checkout@v3
+- name: Set up Python
+uses: actions/setup-python@v4
+with:
+python-version: '3.x'
+- name: Install dependencies
+run: pip install requests pytz
+- name: Print Current Time in UTC
+run: |
+echo " Current UTC Time:"
+date -u
+- name: Run bot to send reminder
+run: python bot.py
+env:
+DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+THREAD_ID: ${{ secrets.THREAD_ID }}
+ROLE_ID: ${{ secrets.ROLE_ID }}
