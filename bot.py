@@ -13,10 +13,10 @@ now = datetime.now(IST)
 timestamp = now.strftime("%Y-%m-%d %H:%M")
 
 # Message to send
-message = f"<@&{ROLE_ID}> Time for daily standup! ({timestamp} IST)\nDrop your updates below 👇"
+message = f"<@&{ROLE_ID}> @Intern REMINDER - Standup @6pm"
 
 # Replace with your Discord channel ID (hardcoded or via env)
-CHANNEL_ID = "YOUR_CHANNEL_ID"  # Example: "123456789012345678"
+CHANNEL_ID = "1397907627454894092"  # Example: "123456789012345678"
 url = f"https://discord.com/api/v10/channels/{CHANNEL_ID}/messages"
 
 # Headers & data
