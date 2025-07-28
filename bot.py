@@ -7,7 +7,6 @@ from pytz import timezone
 
 # Get secrets from environment
 TOKEN = os.environ['DISCORD_TOKEN']
-ROLE_ID = os.environ['DISCORD_ROLE_ID']
 EMAIL_ADDRESS = os.environ['EMAIL_ADDRESS']
 EMAIL_PASSWORD = os.environ['EMAIL_PASSWORD']
 
@@ -16,8 +15,8 @@ IST = timezone('Asia/Kolkata')
 now = datetime.now(IST)
 timestamp = now.strftime("%Y-%m-%d %H:%M")
 
-# Message content
-message = f"<@&{ROLE_ID}> @Intern REMINDER - Standup @6pm ({timestamp} IST)"
+# Message content (No Role ID)
+message = f"@Intern REMINDER - Standup @6pm ({timestamp} IST)"
 
 # Send to Discord
 CHANNEL_ID = "1397907627454894092"
