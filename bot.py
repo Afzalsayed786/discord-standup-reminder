@@ -1,25 +1,28 @@
 import os
 import requests
+import smtplib
+from email.mime.text import MIMEText
 from datetime import datetime
 from pytz import timezone
 
 # Get secrets from environment
 TOKEN = os.environ['DISCORD_TOKEN']
 ROLE_ID = os.environ['DISCORD_ROLE_ID']
+EMAIL_ADDRESS = os.environ['EMAIL_ADDRESS']
+EMAIL_PASSWORD = os.environ['EMAIL_PASSWORD']
 
 # Time setup
 IST = timezone('Asia/Kolkata')
 now = datetime.now(IST)
 timestamp = now.strftime("%Y-%m-%d %H:%M")
 
-# Message to send
-message = f"<@&{ROLE_ID}> @Intern REMINDER - Standup @6pm"
+# Message content
+message = f"<@&{ROLE_ID}> @Intern REMINDER - Standup @6pm ({timestamp} IST)"
 
-# Replace with your Discord channel ID (hardcoded or via env)
-CHANNEL_ID = "1397907627454894092"  # Example: "123456789012345678"
+# Send to Discord
+CHANNEL_ID = "1397907627454894092"
 url = f"https://discord.com/api/v10/channels/{CHANNEL_ID}/messages"
 
-# Headers & data
 headers = {
     "Authorization": f"Bot {TOKEN}",
     "Content-Type": "application/json"
@@ -28,11 +31,26 @@ data = {
     "content": message
 }
 
-# Send message
 response = requests.post(url, headers=headers, json=data)
 
-if response.status_code == 200 or response.status_code == 204:
-    print("✅ Message sent successfully!")
+if response.status_code in [200, 204]:
+    print("✅ Discord message sent!")
 else:
-    print(f"❌ Failed to send message: {response.status_code}")
+    print(f"❌ Discord failed: {response.status_code}")
     print(response.text)
+
+# Send to Email
+try:
+    email_msg = MIMEText(message)
+    email_msg['Subject'] = "🛎️ Daily Standup Reminder"
+    email_msg['From'] = EMAIL_ADDRESS
+    email_msg['To'] = EMAIL_ADDRESS
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        smtp.send_message(email_msg)
+
+    print("✅ Email sent successfully!")
+
+except Exception as e:
+    print(f"❌ Email failed: {str(e)}")
