@@ -22,11 +22,12 @@ jobs:
 
     - name: Print Current Time in UTC
       run: |
-        echo " Current UTC Time:"
+        echo "Current UTC Time:"
         date -u
 
     - name: Run bot to send reminder
       run: python bot.py
       env:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-        ROLE_ID: ${{ secrets.DISCORD_ROLE_ID }}
+        EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
